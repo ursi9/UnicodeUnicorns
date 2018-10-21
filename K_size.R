@@ -18,11 +18,13 @@ k_size<- data.frame("k" = numeric(), "Day" = as.Date(x = integer(0), origin = "1
 for(d in unique(df$Day)){
   print(d)
   sel<-(df$Day == d)
-  k_size <- rbind(k_size, data.frame("k" = (mean(df$Thickness[df$Day == d])*length(df$Day[df$Day == d])), "Day" = as.Date(d, format = "%Y-%m-%d", origin = "1970-01-01")))
+  sa<-length(df$Day[sel])
+  k_size <- rbind(k_size, data.frame("sa" = sa, "k" = (mean(df$Thickness[sel])*sa), "Day" = as.Date(d, format = "%Y-%m-%d", origin = "1970-01-01")))
 }
 
 a<-seq(1, length(k_size$Day), by = as.integer(length(k_size$Day)/4))
 val <- ggplot() + geom_line(data = k_size, aes(x = as.numeric(Day), y = k)) + labs(caption = "mass of ice over time") + ylim(0,max(k_size$k))
+val2 <- ggplot() + geom_line(data = k_size, aes(x = as.numeric(Day), y = k), color = "black") + geom_line(data = k_size, aes(x = as.numeric(Day), y = sa), color = "red") + labs(caption = "mass of ice over time") + ylim(0,max(k_size$k))
 pic1 <- plotter(subset(df, Day == k_size$Day[a[1]]))
 pic2 <- plotter(subset(df, Day == k_size$Day[a[2]]))
 pic3 <- plotter(subset(df, Day == k_size$Day[a[3]]))
