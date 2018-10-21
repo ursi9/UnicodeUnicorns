@@ -1,17 +1,15 @@
 plotter <- function(df){
+  # Set Background Map
   data("wrld_simpl", package = "maptools")                                                                            
   wm <- crop(wrld_simpl, extent(-180, 180, 60, 90)) 
   
-  # Defines the x axes required
-  x_lines <- seq(-120,180, by = 60)
+  # Date Labels
   lab <- as.character(df$Day[1], format="%Y-%m-%d")
   
+  # Plot Map and Ice
   plotted <- ggplot() +
-    geom_point(aes(x = Longitude, y = Latitude, color = Thickness), data = df, alpha = 0.6) +
-    #geom_polygon(data = df, aes(x = Longitude, y = Latitude), color = "black", fill = "white", alpha = 0.2) +
-    #geom_tile(data = df, aes(x = Longitude, y = Latitude, width = width, alpha = Thickness), fill = "black",  height = 25/111) +
-    #geom_rect(data = df, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = Thickness)) +
-    geom_polygon(data = wm, aes(x = long, y = lat, group = group), fill = "tan", colour = "black", alpha = 0.8) +
+    geom_point(aes(x = Longitude, y = Latitude, color = Thickness), data = df, alpha = 0.6) + #Ice
+    geom_polygon(data = wm, aes(x = long, y = lat, group = group), fill = "tan", colour = "black", alpha = 0.8) + #Map
     
     # Convert to polar coordinates
     coord_map("ortho", orientation = c(90, 0, 0)) +
